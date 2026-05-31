@@ -166,6 +166,28 @@ class LlmService {
     return PromptManager.cleanSubject(buffer.toString());
   }
 
+  Stream<String> generateTextTransform({
+    required String originalText,
+    required String action,
+  }) async* {
+    if (!_isInitialized || _controller == null) {
+      throw Exception('Model not loaded. Please load a model first.');
+    }
+
+    final prompt = PromptManager.buildTransformPrompt(
+      originalText: originalText,
+      action: action,
+    );
+
+    debugPrint('Transform prompt: $prompt');
+
+    yield* _controller!.generate(
+      prompt: prompt,
+      maxTokens: 256,
+      temperature: 0.7,
+    );
+  }
+
   Future<void> dispose() async {
     _controller?.dispose();
     _controller = null;

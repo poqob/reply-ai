@@ -47,6 +47,17 @@ class PromptManager {
     );
   }
 
+  static String buildTransformPrompt({
+    required String originalText,
+    required String action,
+  }) {
+    final instruction = PromptTemplates.transformInstructions[action] ??
+        PromptTemplates.transformInstructions['fix']!;
+    return PromptTemplates.transformTemplate
+        .replaceAll('{transform_instruction}', instruction)
+        .replaceAll('{original_text}', originalText);
+  }
+
   static String clean(String raw) {
     var text = raw.trim();
     text = text.replaceAll('"""', '');

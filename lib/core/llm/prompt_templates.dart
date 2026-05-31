@@ -46,6 +46,55 @@ class PromptTemplates {
       '\n'
       'Subject:';
 
+  static const Map<String, String> transformActions = {
+    'complete': 'Complete',
+    'casual': 'Make casual',
+    'professional': 'Make professional',
+    'formal': 'Make formal',
+    'friendly': 'Make friendly',
+    'translate_en': 'Translate to English',
+    'translate_tr': 'Translate to Turkish',
+    'translate_de': 'Translate to German',
+    'fix': 'Fix grammar',
+    'shorter': 'Make shorter',
+    'longer': 'Make longer',
+    'emojify': 'Add emojis',
+  };
+
+  static const String transformTemplate =
+      'Transform the following email text. {transform_instruction} '
+      'Output ONLY the transformed text, nothing else.\n\n'
+      'Original:\n'
+      '{original_text}\n\n'
+      'Transformed:';
+
+  static const Map<String, String> transformInstructions = {
+    'complete':
+        'Complete any unfinished sentences naturally while preserving the existing text and tone.',
+    'casual':
+        'Rewrite in a casual, relaxed, conversational tone. Use everyday language.',
+    'professional':
+        'Rewrite in a professional, business-appropriate tone. Be clear and solution-oriented.',
+    'formal':
+        'Rewrite in a formal, respectful tone. Do NOT add "Dear" or "Kind regards".',
+    'friendly':
+        'Rewrite in a warm, friendly, approachable tone. Be personable.',
+    'translate_en':
+        'CRITICAL: Translate the text to English. Output ONLY English.',
+    'translate_tr':
+        'KRITIK: Metni Turkceye cevir. SADECE Turkce cikti ver.',
+    'translate_de':
+        'KRITISCH: Ubersetzen Sie den Text ins Deutsche. Nur Deutsch ausgeben.',
+    'fix':
+        'Fix grammar, spelling, and punctuation. Improve clarity without changing the meaning.',
+    'shorter':
+        'Make the text more concise. Remove unnecessary words. Keep the core message.',
+    'longer':
+        'Expand the text with more detail and elaboration. Maintain the original tone.',
+    'emojify':
+        'Add relevant emojis to the text while keeping the original message and tone.',
+  };
+
   static const List<String> echoFragments = [
     'you are an email',
     'output only the raw',
