@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:llama_flutter_android/llama_flutter_android.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:replai/core/llm/prompt_builder.dart';
+import 'package:replai/core/llm/prompt_manager.dart';
 import 'package:replai/data/models/reply_settings.dart';
 
 class LlmService {
@@ -144,16 +145,12 @@ class LlmService {
 
   Future<String> generateSubject({
     required String bodyContent,
-    required ReplySettings settings,
   }) async {
     if (!_isInitialized || _controller == null) {
       throw Exception('Model not loaded. Please load a model first.');
     }
 
-    final prompt = 'Generate a VERY SHORT email subject (3-8 words) for this email body. '
-        'Write the subject in the SAME language as the body text below. '
-        'Output ONLY the subject, no quotes, no "Subject:" prefix, no extra text.\n\n'
-        'Body:\n$bodyContent\n\nSubject:';
+    final prompt = PromptManager.buildSubjectPrompt(bodyContent: bodyContent);
 
     debugPrint('Subject prompt: $prompt');
 
@@ -166,13 +163,7 @@ class LlmService {
       buffer.write(token);
     }
 
-    var subject = buffer.toString().trim();
-    subject = subject.replaceAll('"', '');
-    subject = subject.replaceAll(RegExp(r'^Subject:\s*', caseSensitive: false), '');
-    subject = subject.replaceAll(RegExp(r'^Re:\s*', caseSensitive: false), '');
-    subject = subject.replaceAll('\n', ' ');
-
-    return subject.trim();
+    return PromptManager.cleanSubject(buffer.toString());
   }
 
   Future<void> dispose() async {

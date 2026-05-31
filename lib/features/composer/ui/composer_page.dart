@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:replai/core/llm/llm_service.dart';
-import 'package:replai/data/repositories/settings_repository.dart';
 import 'package:replai/features/composer/logic/composer_provider.dart';
 
 class ComposerPage extends ConsumerStatefulWidget {
@@ -74,12 +73,8 @@ class _ComposerPageState extends ConsumerState<ComposerPage> {
         throw Exception('Model not loaded');
       }
 
-      final settings =
-          await SettingsRepository().loadSettings();
-
       final subject = await llmService.generateSubject(
         bodyContent: body,
-        settings: settings,
       );
 
       if (subject.isNotEmpty) {
