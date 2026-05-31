@@ -142,6 +142,39 @@ class LlmService {
     return PromptBuilder.cleanResponse(buffer.toString());
   }
 
+  Future<String> generateSubject({
+    required String bodyContent,
+    required ReplySettings settings,
+  }) async {
+    if (!_isInitialized || _controller == null) {
+      throw Exception('Model not loaded. Please load a model first.');
+    }
+
+    final prompt = 'Generate a VERY SHORT email subject (3-8 words) for this email body. '
+        '${PromptBuilder.languageInstructions[settings.language] ?? PromptBuilder.languageInstructions['en']!} '
+        'Output ONLY the subject, no quotes, no "Subject:" prefix, no extra text.\n\n'
+        'Body:\n$bodyContent\n\nSubject:';
+
+    debugPrint('Subject prompt: $prompt');
+
+    final buffer = StringBuffer();
+    await for (final token in _controller!.generate(
+      prompt: prompt,
+      maxTokens: 32,
+      temperature: 0.3,
+    )) {
+      buffer.write(token);
+    }
+
+    var subject = buffer.toString().trim();
+    subject = subject.replaceAll('"', '');
+    subject = subject.replaceAll(RegExp(r'^Subject:\s*', caseSensitive: false), '');
+    subject = subject.replaceAll(RegExp(r'^Re:\s*', caseSensitive: false), '');
+    subject = subject.replaceAll('\n', ' ');
+
+    return subject.trim();
+  }
+
   Future<void> dispose() async {
     _controller?.dispose();
     _controller = null;

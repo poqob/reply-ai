@@ -14,7 +14,7 @@ class PromptBuilder {
         'Write in a warm, friendly, approachable tone.',
   };
 
-  static final Map<String, String> _languageInstructions = {
+  static final Map<String, String> languageInstructions = {
     'en': 'CRITICAL: Reply ONLY in English, regardless of the email language.',
     'tr': 'KRITIK: SADECE Turkce yanit ver, email baska dilde olsa bile.',
     'de': 'KRITISCH: Nur auf Deutsch antworten, unabhangig von der E-Mail-Sprache.',
@@ -31,7 +31,7 @@ class PromptBuilder {
 
     buffer.write('Write a brief (1-2 sentences) reply to this email from $senderName. '
         '${_toneInstructions[settings.tone] ?? _toneInstructions['professional']!} '
-        '${_languageInstructions[settings.language] ?? _languageInstructions['en']!} '
+        '${languageInstructions[settings.language] ?? languageInstructions['en']!} '
         'Rules: only the reply text, no headers, no signatures, no commentary, no quotes, no markdown.');
 
     if (persona != null && persona.name.isNotEmpty) {

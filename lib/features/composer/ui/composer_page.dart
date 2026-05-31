@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:replai/core/llm/llm_service.dart';
+import 'package:replai/data/repositories/settings_repository.dart';
 import 'package:replai/features/composer/logic/composer_provider.dart';
 
 class ComposerPage extends ConsumerStatefulWidget {
@@ -25,6 +27,7 @@ class _ComposerPageState extends ConsumerState<ComposerPage> {
   final _bccController = TextEditingController();
   final _subjectController = TextEditingController();
   final _bodyController = TextEditingController();
+  bool _generatingSubject = false;
 
   @override
   void initState() {
@@ -52,6 +55,46 @@ class _ComposerPageState extends ConsumerState<ComposerPage> {
     _subjectController.dispose();
     _bodyController.dispose();
     super.dispose();
+  }
+
+  Future<void> _generateSubject() async {
+    final body = _bodyController.text.trim();
+    if (body.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Write the email body first')),
+      );
+      return;
+    }
+
+    setState(() => _generatingSubject = true);
+
+    try {
+      final llmService = LlmService();
+      if (!llmService.isInitialized) {
+        throw Exception('Model not loaded');
+      }
+
+      final settings =
+          await SettingsRepository().loadSettings();
+
+      final subject = await llmService.generateSubject(
+        bodyContent: body,
+        settings: settings,
+      );
+
+      if (subject.isNotEmpty) {
+        _subjectController.text = subject;
+        ref.read(composerProvider.notifier).setSubject(subject);
+      }
+    } on Exception catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Subject generation failed: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _generatingSubject = false);
+    }
   }
 
   Future<void> _send() async {
@@ -125,9 +168,23 @@ class _ComposerPageState extends ConsumerState<ComposerPage> {
             const SizedBox(height: 8),
             TextField(
               controller: _subjectController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Subject',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
+                suffixIcon: _generatingSubject
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Padding(
+                          padding: EdgeInsets.all(12),
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.auto_awesome),
+                        tooltip: 'Generate subject from body',
+                        onPressed: _generateSubject,
+                      ),
               ),
             ),
             const SizedBox(height: 12),
