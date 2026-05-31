@@ -62,37 +62,47 @@ class PromptTemplates {
   };
 
   static const String transformTemplate =
-      'Transform the following email text. {transform_instruction} '
-      'Output ONLY the transformed text, nothing else.\n\n'
-      'Original:\n'
+      '{transform_instruction}\n\n'
+      'Text:\n'
       '{original_text}\n\n'
-      'Transformed:';
+      'Transformed text (only the result):';
 
   static const Map<String, String> transformInstructions = {
     'complete':
-        'Complete any unfinished sentences naturally while preserving the existing text and tone.',
+        'Complete any unfinished sentences in the following text. '
+        'Keep the existing text unchanged, only add what is missing. '
+        'Output the completed text directly.',
     'casual':
-        'Rewrite in a casual, relaxed, conversational tone. Use everyday language.',
+        'Rewrite the following text in a casual, relaxed, conversational tone. '
+        'Use everyday language. Output only the rewritten text.',
     'professional':
-        'Rewrite in a professional, business-appropriate tone. Be clear and solution-oriented.',
+        'Rewrite the following text in a professional tone. '
+        'Make it clear, polite, and business-appropriate. '
+        'Output only the rewritten text. Do NOT add signatures, greetings, or closings.',
     'formal':
-        'Rewrite in a formal, respectful tone. Do NOT add "Dear" or "Kind regards".',
+        'Rewrite the following text in a formal, respectful tone. '
+        'Output only the rewritten text. Do NOT add signatures, greetings, or closings.',
     'friendly':
-        'Rewrite in a warm, friendly, approachable tone. Be personable.',
+        'Rewrite the following text in a warm, friendly, approachable tone. '
+        'Output only the rewritten text.',
     'translate_en':
-        'CRITICAL: Translate the text to English. Output ONLY English.',
+        'Translate the following text to English. Output only the translation.',
     'translate_tr':
-        'KRITIK: Metni Turkceye cevir. SADECE Turkce cikti ver.',
+        'Translate the following text to Turkish. Output only the translation.',
     'translate_de':
-        'KRITISCH: Ubersetzen Sie den Text ins Deutsche. Nur Deutsch ausgeben.',
+        'Translate the following text to German. Output only the translation.',
     'fix':
-        'Fix grammar, spelling, and punctuation. Improve clarity without changing the meaning.',
+        'Fix grammar, spelling, and punctuation in the following text. '
+        'Improve clarity without changing the meaning. Output only the corrected text.',
     'shorter':
-        'Make the text more concise. Remove unnecessary words. Keep the core message.',
+        'Make the following text more concise. Remove unnecessary words. '
+        'Keep the core message. Output only the shortened text.',
     'longer':
-        'Expand the text with more detail and elaboration. Maintain the original tone.',
+        'Expand the following text with more detail while maintaining its tone. '
+        'Output only the expanded text.',
     'emojify':
-        'Add relevant emojis to the text while keeping the original message and tone.',
+        'Add relevant emojis to the following text. Keep the original message. '
+        'Output only the text with emojis added.',
   };
 
   static const List<String> echoFragments = [

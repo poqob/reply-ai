@@ -183,7 +183,7 @@ class LlmService {
 
     yield* _controller!.generate(
       prompt: prompt,
-      maxTokens: 256,
+      maxTokens: 128,
       temperature: 0.7,
     );
   }
