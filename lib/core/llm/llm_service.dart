@@ -151,7 +151,7 @@ class LlmService {
     }
 
     final prompt = 'Generate a VERY SHORT email subject (3-8 words) for this email body. '
-        '${PromptBuilder.languageInstructions[settings.language] ?? PromptBuilder.languageInstructions['en']!} '
+        'Write the subject in the SAME language as the body text below. '
         'Output ONLY the subject, no quotes, no "Subject:" prefix, no extra text.\n\n'
         'Body:\n$bodyContent\n\nSubject:';
 
