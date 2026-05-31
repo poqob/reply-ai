@@ -62,47 +62,39 @@ class PromptTemplates {
   };
 
   static const String transformTemplate =
-      '{transform_instruction}\n\n'
-      'Text:\n'
-      '{original_text}\n\n'
-      'Transformed text (only the result):';
+      '{transform_instruction}'
+      '\n\n'
+      '{original_text}';
 
   static const Map<String, String> transformInstructions = {
     'complete':
-        'Complete any unfinished sentences in the following text. '
-        'Keep the existing text unchanged, only add what is missing. '
-        'Output the completed text directly.',
+        'Complete any unfinished sentences. '
+        'Keep the existing text, only add what is missing:',
     'casual':
-        'Rewrite the following text in a casual, relaxed, conversational tone. '
-        'Use everyday language. Output only the rewritten text.',
+        'Rewrite casually and conversationally:',
     'professional':
-        'Rewrite the following text in a professional tone. '
-        'Make it clear, polite, and business-appropriate. '
-        'Output only the rewritten text. Do NOT add signatures, greetings, or closings.',
+        'Rewrite in a professional business tone. '
+        'No signatures, no greetings, no closings:',
     'formal':
-        'Rewrite the following text in a formal, respectful tone. '
-        'Output only the rewritten text. Do NOT add signatures, greetings, or closings.',
+        'Rewrite in a formal respectful tone. '
+        'No signatures, no greetings, no closings:',
     'friendly':
-        'Rewrite the following text in a warm, friendly, approachable tone. '
-        'Output only the rewritten text.',
+        'Rewrite in a warm friendly tone:',
     'translate_en':
-        'Translate the following text to English. Output only the translation.',
+        'Translate to English:',
     'translate_tr':
-        'Translate the following text to Turkish. Output only the translation.',
+        'Translate to Turkish:',
     'translate_de':
-        'Translate the following text to German. Output only the translation.',
+        'Translate to German:',
     'fix':
-        'Fix grammar, spelling, and punctuation in the following text. '
-        'Improve clarity without changing the meaning. Output only the corrected text.',
+        'Fix grammar, spelling, and punctuation. '
+        'Do not change the meaning:',
     'shorter':
-        'Make the following text more concise. Remove unnecessary words. '
-        'Keep the core message. Output only the shortened text.',
+        'Make more concise. Keep the core message:',
     'longer':
-        'Expand the following text with more detail while maintaining its tone. '
-        'Output only the expanded text.',
+        'Expand with more detail. Keep the tone:',
     'emojify':
-        'Add relevant emojis to the following text. Keep the original message. '
-        'Output only the text with emojis added.',
+        'Add relevant emojis. Keep the original message:',
   };
 
   static const List<String> echoFragments = [
@@ -118,6 +110,18 @@ class PromptTemplates {
     'critical language rule',
     'write a brief',
     'email reply generator',
+    'transformed text',
+    'rewrite the following',
+    'rewrite in a',
+    'translate to',
+    'translate the following',
+    'complete any',
+    'make the following',
+    'fix grammar',
+    'the following text',
+    'original:',
+    'transformed:',
+    'text:',
   ];
 
   static const List<String> metaLinePatterns = [
